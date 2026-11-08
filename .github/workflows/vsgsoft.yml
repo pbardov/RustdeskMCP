@@ -746,7 +746,7 @@ jobs:
     - name: Verify MCP transport on the actual GUI
       run: |
         sudo apt-get update -y
-        sudo apt-get install -y xvfb xauth dbus-x11 libgtk-3-0 libayatana-appindicator3-1 libasound2 libxdo3 libgstreamer-plugins-base1.0-0 libva2 libva-drm2 libva-x11-2 libpam0g libglu1-mesa
+        sudo apt-get install -y xvfb xauth dbus-x11 libgtk-3-0 libayatana-appindicator3-1 libasound2 libpulse0 libxdo3 libgstreamer-plugins-base1.0-0 libva2 libva-drm2 libva-x11-2 libpam0g libglu1-mesa libegl1 libegl-mesa0 libgl1-mesa-dri
         python3 vsgsoft/smoke_mcp.py flutter/build/linux/x64/release/bundle/rustdesk
     - name: Collect VSGSoft packages
       shell: bash

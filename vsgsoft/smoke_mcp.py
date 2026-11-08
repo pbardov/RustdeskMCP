@@ -49,8 +49,9 @@ def exercise(binary, enabled, folder):
     env.update({
         "XDG_CONFIG_HOME": str(config_root), "XDG_CACHE_HOME": str(config_root / "cache"),
         "LD_LIBRARY_PATH": str(binary.parent / "lib"), "LIBGL_ALWAYS_SOFTWARE": "1",
-        "RUSTDESK_MCP_APP_NAME": "RustDeskMCP",
     })
+    env.pop("RUSTDESK_MCP_APP_NAME", None)
+    env.pop("RUSTDESK_APPNAME", None)
     with (folder / ("enabled.log" if enabled else "disabled.log")).open("w") as log:
         proc = subprocess.Popen(
             ["dbus-run-session", "--", "xvfb-run", "-a", str(binary)],
@@ -110,11 +111,21 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("binary", type=Path)
     args = parser.parse_args()
+    binary = args.binary.resolve()
+    probe_env = os.environ.copy()
+    probe_env["LD_LIBRARY_PATH"] = str(binary.parent / "lib")
+    missing = set()
+    for path in [binary, *(binary.parent / "lib").glob("*.so")]:
+        result = subprocess.run(["ldd", str(path)], text=True, capture_output=True, env=probe_env)
+        missing.update(line.strip() for line in result.stdout.splitlines() if "not found" in line)
+    if missing:
+        raise RuntimeError("Missing runtime libraries: " + "; ".join(sorted(missing)))
+    print("PASS: all native runtime libraries resolve")
     with socket.socket() as listener:
         listener.bind(("127.0.0.1", 59940))
     with tempfile.TemporaryDirectory(prefix="vsgsoft-mcp-smoke-") as folder:
-        exercise(args.binary.resolve(), False, Path(folder))
-        exercise(args.binary.resolve(), True, Path(folder))
+        exercise(binary, False, Path(folder))
+        exercise(binary, True, Path(folder))
 
 
 if __name__ == "__main__":

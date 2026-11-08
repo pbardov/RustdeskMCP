@@ -88,7 +88,7 @@ def main():
 <main><small>VSGSOFT · УДАЛЁННАЯ ПОДДЕРЖКА</small><h1>RustDeskMCP<br>для сервера VSGSoft</h1>
 <p class="muted">Версия VERSION. Скачайте приложение для своей системы. Сервер VSGSoft и его публичный ключ уже заданы.</p>
 <div class="downloads">DOWNLOADS</div>
-<p>В Windows запустите EXE либо распакуйте ZIP и запустите RustDeskMCP.exe. В Linux распакуйте tar.gz и запустите ./RustDeskMCP/RustDeskMCP; требуются системные библиотеки GTK 3, X11, libxdo, PulseAudio, VA-API, PAM и GStreamer. В macOS перенесите приложение из DMG в «Программы» и разрешите доступ к записи экрана и универсальному доступу.</p>
+<p>В Windows запустите EXE либо распакуйте ZIP и запустите RustDeskMCP.exe. В Linux распакуйте tar.gz и запустите ./RustDeskMCP/RustDeskMCP; требуются системные библиотеки GTK 3, X11, libxdo, PulseAudio, VA-API, PAM, GStreamer и EGL/OpenGL. В macOS перенесите приложение из DMG в «Программы» и разрешите доступ к записи экрана и универсальному доступу.</p>
 <p>Чтобы подключить AI-клиент, откройте <strong>Настройки → Безопасность → Enable MCP server</strong>. Адрес Streamable HTTP: <code>http://127.0.0.1:59940/mcp</code>. Приложение должно быть запущено на том же компьютере. MCP выключен по умолчанию.</p>
 <p>RustDeskMCP использует отдельный профиль и может запускаться рядом с <a href="https://pbardov.github.io/rustdesk/">обычным клиентом VSGSoft</a>. <a href="https://github.com/YaoxinCS/RustdeskMCP/blob/main/docs/RustDeskMCP.md">Документация MCP</a>.</p>
 <p class="muted">Сборки не подписаны сертификатами Microsoft / Apple. Система может запросить подтверждение запуска. Обновления доступны на этой странице.</p>

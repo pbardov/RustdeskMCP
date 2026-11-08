@@ -7,7 +7,7 @@ Ordinary client: https://pbardov.github.io/rustdesk/
 ## Platforms and use
 
 - Windows x64: portable EXE or extract the ZIP and run `RustDeskMCP.exe`.
-- Linux x64: extract the tar.gz and run `./RustDeskMCP/RustDeskMCP`. System GTK 3, X11, libxdo, PulseAudio, VA-API, PAM, GStreamer and appindicator libraries are required, as for upstream RustDesk. No system service is installed by the archive.
+- Linux x64: extract the tar.gz and run `./RustDeskMCP/RustDeskMCP`. System GTK 3, X11, libxdo, PulseAudio, VA-API, PAM, GStreamer, EGL/OpenGL and appindicator libraries are required, as for upstream RustDesk. No system service is installed by the archive.
 - macOS Intel and Apple Silicon: copy `RustDeskMCP.app` from the DMG into Applications. Grant Screen Recording and Accessibility permissions as needed.
 
 The native application name and configuration profile are `RustDeskMCP`; Linux application ID and macOS bundle ID are `com.vsgsoft.RustDeskMCP`. This keeps it separate from ordinary RustDesk. Published distributions are unsigned; Windows SmartScreen or macOS Gatekeeper may request approval.
