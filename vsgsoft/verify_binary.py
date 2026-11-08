@@ -4,6 +4,7 @@
 import argparse
 import json
 from pathlib import Path
+import plistlib
 
 
 def main():
@@ -17,6 +18,14 @@ def main():
     needles += [b"127.0.0.1:59940", b"enable-mcp-server", b"open_desktop_session", b"terminal_input"]
     candidates = 0
     for root in args.paths:
+        if root.suffix == ".app":
+            info = plistlib.loads((root / "Contents/Info.plist").read_bytes())
+            assert info["CFBundleIdentifier"] == "com.vsgsoft.RustDeskMCP", info["CFBundleIdentifier"]
+            assert info["CFBundleName"] == "RustDeskMCP", info["CFBundleName"]
+            assert info["CFBundleExecutable"] == "RustDeskMCP", info["CFBundleExecutable"]
+            schemes = {s for entry in info["CFBundleURLTypes"] for s in entry["CFBundleURLSchemes"]}
+            assert "rustdeskmcp" in schemes and "rustdesk" not in schemes, schemes
+            print("Verified packaged macOS identity and URL scheme:", info["CFBundleIdentifier"])
         files = root.rglob("*") if root.is_dir() else [root]
         for path in files:
             if not path.is_file() or path.suffix.lower() not in [".dll", ".so", ".dylib", ".exe", ""]:

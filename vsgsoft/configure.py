@@ -71,7 +71,10 @@ PAIRS
             ("PRODUCT_NAME = RustDesk\n", "PRODUCT_NAME = RustDeskMCP\n"),
             ("PRODUCT_BUNDLE_IDENTIFIER = com.carriez.flutterHbb", "PRODUCT_BUNDLE_IDENTIFIER = com.vsgsoft.RustDeskMCP"),
         ],
-        "flutter/macos/Runner.xcodeproj/project.pbxproj": [("RustDesk.app", "RustDeskMCP.app")],
+        "flutter/macos/Runner.xcodeproj/project.pbxproj": [
+            ("RustDesk.app", "RustDeskMCP.app"),
+            ("PRODUCT_BUNDLE_IDENTIFIER = com.carriez.rustdesk;", "PRODUCT_BUNDLE_IDENTIFIER = com.vsgsoft.RustDeskMCP;"),
+        ],
         "flutter/macos/Runner.xcodeproj/xcshareddata/xcschemes/Runner.xcscheme": [("RustDesk.app", "RustDeskMCP.app")],
         "flutter/macos/Runner/Info.plist": [
             ("<string>com.carriez.rustdesk</string>", "<string>com.vsgsoft.RustDeskMCP</string>"),
