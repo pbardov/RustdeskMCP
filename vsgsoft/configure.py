@@ -78,6 +78,13 @@ PAIRS
             ("<string>rustdesk</string>", "<string>rustdeskmcp</string>"),
         ],
         "build.py": [("RustDesk.app", "RustDeskMCP.app")],
+        "libs/portable/src/main.rs": [
+            ('const APP_PREFIX: &str = "rustdesk";', 'const APP_PREFIX: &str = "rustdeskmcp";'),
+            ("RuntimeBroker_rustdesk.exe", "RuntimeBroker_rustdeskmcp.exe"),
+        ],
+        "src/privacy_mode/win_topmost_window.rs": [
+            ("RuntimeBroker_rustdesk.exe", "RuntimeBroker_rustdeskmcp.exe"),
+        ],
     }
     if not (root / "src/agent_bridge.rs").is_file():
         raise RuntimeError("Upstream source does not contain the MCP implementation")
