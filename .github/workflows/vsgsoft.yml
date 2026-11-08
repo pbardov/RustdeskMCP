@@ -583,9 +583,9 @@ jobs:
         path: |-
           target/release
           .vsgsoft-cargo-cache
-        key: mcp-linux-${{ env.RUST_VERSION }}-${{ env.VCPKG_COMMIT_ID }}-${{ hashFiles('Cargo.lock', '**/Cargo.toml')
+        key: mcp-linux-${{ env.RUST_VERSION }}-${{ env.VCPKG_COMMIT_ID }}-${{ hashFiles('Cargo.lock', 'Cargo.toml', 'libs/**/Cargo.toml')
           }}-${{ github.run_id }}-${{ github.run_attempt }}
-        restore-keys: mcp-linux-${{ env.RUST_VERSION }}-${{ env.VCPKG_COMMIT_ID }}-${{ hashFiles('Cargo.lock', '**/Cargo.toml')
+        restore-keys: mcp-linux-${{ env.RUST_VERSION }}-${{ env.VCPKG_COMMIT_ID }}-${{ hashFiles('Cargo.lock', 'Cargo.toml', 'libs/**/Cargo.toml')
           }}-
     - uses: rustdesk-org/run-on-arch-action@d3fcfbb632b84cf7f6bc772bfaaa2c2f4f8789a8
       name: Build rustdesk
@@ -741,7 +741,7 @@ jobs:
         path: |-
           target/release
           .vsgsoft-cargo-cache
-        key: mcp-linux-${{ env.RUST_VERSION }}-${{ env.VCPKG_COMMIT_ID }}-${{ hashFiles('Cargo.lock', '**/Cargo.toml')
+        key: mcp-linux-${{ env.RUST_VERSION }}-${{ env.VCPKG_COMMIT_ID }}-${{ hashFiles('Cargo.lock', 'Cargo.toml', 'libs/**/Cargo.toml')
           }}-${{ github.run_id }}-${{ github.run_attempt }}
     - name: Verify MCP transport on the actual GUI
       run: |
