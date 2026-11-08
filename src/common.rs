@@ -136,9 +136,7 @@ pub fn pre_global_init_app_name() {
                 })
                 .filter(|name| name.eq_ignore_ascii_case("RustDeskMCP"))
         });
-    let Some(app_name) = app_name else {
-        return;
-    };
+    let app_name = app_name.unwrap_or_else(|| "RustDeskMCP".to_owned());
     *hbb_common::config::APP_NAME.write().unwrap() = app_name.clone();
     if std::env::var(PORTABLE_APPNAME_RUNTIME_ENV_KEY)
         .ok()
@@ -2110,6 +2108,7 @@ pub fn rustdesk_interval(i: Interval) -> ThrottledInterval {
 }
 
 pub fn load_custom_client() {
+    crate::vsgsoft_config::apply();
     #[cfg(debug_assertions)]
     if let Ok(data) = std::fs::read_to_string("./custom.txt") {
         read_custom_client(data.trim());
