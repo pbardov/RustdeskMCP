@@ -72,6 +72,11 @@ PAIRS
             ("PRODUCT_BUNDLE_IDENTIFIER = com.carriez.flutterHbb", "PRODUCT_BUNDLE_IDENTIFIER = com.vsgsoft.RustDeskMCP"),
         ],
         "flutter/macos/Runner.xcodeproj/project.pbxproj": [("RustDesk.app", "RustDeskMCP.app")],
+        "flutter/macos/Runner.xcodeproj/xcshareddata/xcschemes/Runner.xcscheme": [("RustDesk.app", "RustDeskMCP.app")],
+        "flutter/macos/Runner/Info.plist": [
+            ("<string>com.carriez.rustdesk</string>", "<string>com.vsgsoft.RustDeskMCP</string>"),
+            ("<string>rustdesk</string>", "<string>rustdeskmcp</string>"),
+        ],
         "build.py": [("RustDesk.app", "RustDeskMCP.app")],
     }
     if not (root / "src/agent_bridge.rs").is_file():
