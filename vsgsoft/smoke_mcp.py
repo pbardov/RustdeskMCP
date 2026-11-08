@@ -80,6 +80,13 @@ def exercise(binary, enabled, folder):
             assert status == 200 and TOOLS <= {tool["name"] for tool in data["result"]["tools"]}, data
             assert request("ping")[1]["result"] == {}
             print("PASS: initialize, initialized, tools/list (13 tools) and ping")
+        except Exception:
+            log.flush()
+            # Only error lines, never configuration dumps or generated credentials.
+            for line in (folder / ("enabled.log" if enabled else "disabled.log")).read_text(errors="replace").splitlines():
+                if any(word in line.lower() for word in ["failed to load", "cannot open shared object", "error while loading", "panic", "exception", "unable to open", "cannot open display"]):
+                    print("GUI diagnostic:", line[:400])
+            raise
         finally:
             try:
                 os.killpg(proc.pid, signal.SIGTERM)
