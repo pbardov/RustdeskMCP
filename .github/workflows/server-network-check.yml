@@ -1,0 +1,57 @@
+name: RustDesk server network diagnostic
+'on':
+  push:
+    branches:
+    - diagnostics/server-network-20261113
+  workflow_dispatch: {}
+permissions:
+  contents: read
+jobs:
+  probe:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 3
+    steps:
+    - name: Probe TCP and UDP from an independent network
+      run: |
+        python3 -u - <<'PY'
+        import socket, os, time, json
+        host = 'rustdesk.vsgsoft.com'
+        print('DNS:', sorted({a[4][0] for a in socket.getaddrinfo(host, None)}), flush=True)
+        def exact(sock, n):
+            data = b''
+            while len(data) < n:
+                chunk = sock.recv(n-len(data))
+                if not chunk: raise EOFError('Server closed the connection')
+                data += chunk
+            return data
+        for port in [21115, 21116]:
+            with socket.create_connection((host, port), timeout=5) as sock:
+                sock.settimeout(5)
+                sock.sendall(bytes.fromhex('0ca20100'))
+                first = exact(sock, 1)
+                width = (first[0] & 3) + 1
+                header = first + exact(sock, width-1)
+                data = exact(sock, int.from_bytes(header, 'little') >> 2)
+                assert data.startswith(bytes.fromhex('aa01')), 'Unexpected NAT response'
+                print(f'PASS: TCP {port}, real RustDesk NAT response', flush=True)
+        identifier = ('netdiag-' + os.environ['GITHUB_RUN_ID']).encode()
+        inner = bytes([10, len(identifier)]) + identifier
+        payload = bytes([50, len(inner)]) + inner
+        success = False
+        with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as sock:
+            sock.settimeout(5)
+            for attempt in range(3):
+                started = time.monotonic()
+                sock.sendto(payload, (host, 21116))
+                try:
+                    data, peer = sock.recvfrom(4096)
+                    assert data and data[0] == 58, 'Unexpected registration response'
+                    print(json.dumps({'check':'UDP 21116 RustDesk registration', 'ok':True, 'peer':peer, 'response_bytes':len(data), 'latency_ms':round((time.monotonic()-started)*1000,2)}), flush=True)
+                    success = True
+                    break
+                except socket.timeout:
+                    print(f'UDP attempt {attempt+1}: timed out', flush=True)
+        with open(os.environ['GITHUB_STEP_SUMMARY'], 'w') as summary:
+            summary.write('TCP 21115/21116: RustDesk NAT replies received.\n\nUDP 21116 registration: ' + ('PASS' if success else 'FAIL') + '\n')
+        if not success: raise SystemExit('No UDP registration response from this independent GitHub network')
+        PY
